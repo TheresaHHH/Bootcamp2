@@ -3,7 +3,7 @@
 import { Sequelize, Model, DataTypes } from '@sequelize/core';
 
   //imports dontenv module and allows us to access stored environment variables stored in .env file
-  import 'dotenv/config';
+import 'dotenv/config';
 
 /* Connect to your database 
   See: Sequalize Getting Started - Connecting to a database by passing a URI - Read: https://sequelize.org/docs/v6/getting-started/#connecting-to-a-database
@@ -14,6 +14,7 @@ import { Sequelize, Model, DataTypes } from '@sequelize/core';
   Read - artilce to learn more about environment variables - https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
 */
 //ADD CODE HERE to connect to you database
+const sequelize = new Sequelize(process.env.API_URL);
 
 /* Create your Sequalize Model for Listing */
 /*Hint: Take a look at listings.json to figure out the model attributes we need to define.
@@ -24,9 +25,26 @@ import { Sequelize, Model, DataTypes } from '@sequelize/core';
 const Listing = sequelize.define('Listing', {
   // Model attributes are defined here
   //ADD CODE HERE
+   code: {
+		type: DataTypes.STRING,
+		primaryKey: true
+   },
+   name: {
+		type: DataTypes.STRING
+   },
+   latitude:{type: DataTypes.FLOAT},
+   longitude:{type: DataTypes.FLOAT},
+   address: {
+		type: DataTypes.STRING
+  }
+  
 }, {
   // Other model options go here
   tableName: 'Listings'
+  ,
+  timestamps: false,
+  createdAt: false,
+  updatedAt:false
 });
 
 // `sequelize.define` also returns the model

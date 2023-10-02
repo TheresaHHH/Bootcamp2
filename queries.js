@@ -7,7 +7,7 @@ import { Sequelize, Model, DataTypes,  QueryTypes, sql } from '@sequelize/core';
   import { Listing } from './ListingModel.js';
 /* Connect to your database */
 //ADD CODE HERE to connect to you database - same code you put for JSONtoPostgreSQL.js and ListingModel.js
-
+const sequelize = new Sequelize(process.env.API_URL);
 /*There are many ways to make aynchronous calls in Javascript: Promises, callbacks, Asyc/Await - https://www.geeksforgeeks.org/difference-between-promise-and-async-await-in-node-js/
   Best Practice: A current practice is to use Async Await.  
   Async / Await - https://www.theodinproject.com/lessons/node-path-javascript-async-and-await and https://javascript.info/async-await
@@ -44,16 +44,21 @@ try {
     - Checkout the CVE and GitHub refs to see examples - https://www.cve.org/CVERecord?id=CVE-2023-25813
     - Click on some of the Github examples and look at the workarounds and check that you are running the latest version of the Sequelize where patches have been issued.
   */
-   
+	
    
         /* 
       Retrieve all listings in the database, and log them to the console. 
       Learn more about the finder methods available to sequelize models - https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
     */
-      async function retrieveAllListings() {
+    async function retrieveAllListings() {
           //ADD CODE HERE
-          console.log('Retrieving all listings');
-      }
+          console.log('Retrieving all listings');//{attributes:['code','name','latitude','longitude','address']}
+		 await Listing.findAll({raw:true}).then(res => {
+			 console.log(JSON.stringify(res,null,5))}).catch((error) => {
+			console.error('Failed to retrieve data : ', error);
+		});
+	};
+    
     /* 
     Find the document that contains data corresponding to Library West, then log it to the console. 
     Learn more about the finder methods available to sequelize models - https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
@@ -61,7 +66,11 @@ try {
     async function findLibraryWest() {
        //ADD CODE HERE
       console.log('Finding Library West');
-
+	  await Listing.findOne({where:{name:'Library West'}}).then(res=>{
+		  console.log(JSON.stringify(res,null,5))
+	  }).catch((error) => {
+			console.error('Failed to retrieve data : ', error);
+		});
     }
 
     /*
@@ -71,9 +80,13 @@ try {
       go ahead and remove this listing from your database and log the document to the console. 
       Learn more about the finder methods available to sequelize models - https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
     */
-      async function removeCable() {
+     async function removeCable() {
          //ADD CODE HERE
         console.log('Removing Cable BLDG');
+		
+		await Listing.destroy({where:{code:'CABL'}}).catch((error) => {
+			console.error('Failed to delete data : ', error);
+		});
     }
 
     /*
@@ -83,29 +96,39 @@ try {
     async function addDSIT() {
        //ADD CODE HERE
       console.log('Adding the new DSIT BLDG that will be across from Reitz union. Bye Bye CSE, Hub, and French Fries.');
-    }
-   
-
+	  await Listing.create(
+	  {
+		  code:'DSIT',
+		  name:'Data Science and IT Building'
+	  }).catch((error) => {
+			console.error('Failed to create a new record : ', error);
+		});
+	}
     /*
-      Phelps Memorial Hospital Center's address is incorrect.
+      Phelps lab address is incorrect.
       Find the listing, update it with the correct address (Google address), and then log the updated listing in the database and use console.log to inspect it.
       Learn more about the finder methods available to sequelize models - https://sequelize.org/docs/v6/core-concepts/model-querying-finders/ 
     */
     async function updatePhelpsLab() {
        //ADD CODE HERE
        console.log('UpdatingPhelpsLab.');
- 
+	   await Listing.update({address:'1953 Museum Rd, Gainesville, FL 32603'},{where:{code:'PHL'}}).catch((error) => {
+			console.error('Failed to update a record : ', error);
+		});
     }
-
     
    console.log("Use these calls to test that your functions work. Use console.log statements in each so you can look at the terminal window to see what is executing. Also check the database.")
    //Calling all the functions to test them
-   retrieveAllListings() 
-   removeCable(); 
-   addDSIT();
-   updatePhelpsLab();
-   findLibraryWest();
-       
+   async function runFunctionsSequemtially(){
+		retrieveAllListings(); 
+		removeCable(); 
+		addDSIT();
+		updatePhelpsLab();
+		findLibraryWest();
+   }
+    runFunctionsSequemtially().catch((err)=>{
+		console.error('Failed run functions ', error);
+	})   
   
 
 

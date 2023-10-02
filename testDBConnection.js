@@ -13,6 +13,7 @@ import 'dotenv/config';
   Good Implementation - const sequelize = new Sequelize(process.env.API_URL);
   Read - artilce to learn more about environment variables - https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
 */
+console.log("here:  " +process.env.API_URL);
 const sequelize = new Sequelize(process.env.API_URL);
 
 //Testing that the .env file is working - This should print out the port number
