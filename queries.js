@@ -51,12 +51,12 @@ try {
       Learn more about the finder methods available to sequelize models - https://sequelize.org/docs/v6/core-concepts/model-querying-finders/
     */
     async function retrieveAllListings() {
-          //ADD CODE HERE
+          //ADD CODE HERE{raw:true}
           console.log('Retrieving all listings');//{attributes:['code','name','latitude','longitude','address']}
-		 await Listing.findAll({raw:true}).then(res => {
-			 console.log(JSON.stringify(res,null,5))}).catch((error) => {
+		 await Listing.findAll().then(res => {
+			console.log(JSON.stringify(res,null,5))}).catch((error) => {
 			console.error('Failed to retrieve data : ', error);
-		});
+		});	
 	};
     
     /* 
@@ -120,11 +120,12 @@ try {
    console.log("Use these calls to test that your functions work. Use console.log statements in each so you can look at the terminal window to see what is executing. Also check the database.")
    //Calling all the functions to test them
    async function runFunctionsSequemtially(){
-		retrieveAllListings(); 
-		removeCable(); 
-		addDSIT();
-		updatePhelpsLab();
-		findLibraryWest();
+		await retrieveAllListings(); 
+		await removeCable(); 
+		await addDSIT();
+		await updatePhelpsLab();
+		await findLibraryWest();
+		await console.log('~FIN~');
    }
     runFunctionsSequemtially().catch((err)=>{
 		console.error('Failed run functions ', error);
