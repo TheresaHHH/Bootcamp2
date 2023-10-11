@@ -52,11 +52,11 @@ try {
     */
     async function retrieveAllListings() {
           //ADD CODE HERE{raw:true}
-          console.log('Retrieving all listings');//{attributes:['code','name','latitude','longitude','address']}
-		 await Listing.findAll().then(res => {
-			console.log(JSON.stringify(res,null,5))}).catch((error) => {
-			console.error('Failed to retrieve data : ', error);
-		});	
+         await console.log('Retrieving all listings');//{attributes:['code','name','latitude','longitude','address']}
+		 try{
+			 const result= await Listing.findAll();
+			 await console.log(JSON.stringify(result,null,5));
+		 }catch(error){console.error('Failed to retrieve data : ', error);}
 	};
     
     /* 
@@ -65,12 +65,13 @@ try {
    */
     async function findLibraryWest() {
        //ADD CODE HERE
-      console.log('Finding Library West');
-	  await Listing.findOne({where:{name:'Library West'}}).then(res=>{
-		  console.log(JSON.stringify(res,null,5))
-	  }).catch((error) => {
-			console.error('Failed to retrieve data : ', error);
-		});
+      await console.log('Finding Library West');
+	  try{
+		  const result= await Listing.findOne({where:{name:'Library West'}});
+		  await console.log(JSON.stringify(result,null,5));
+	  }catch(error){
+		  await console.error('Failed to retrieve data : ', error);
+		  }
     }
 
     /*
@@ -82,11 +83,12 @@ try {
     */
      async function removeCable() {
          //ADD CODE HERE
-        console.log('Removing Cable BLDG');
-		
-		await Listing.destroy({where:{code:'CABL'}}).catch((error) => {
-			console.error('Failed to delete data : ', error);
-		});
+        await console.log('Removing Cable BLDG');
+		try{
+			const result=await Listing.destroy({where:{code:'CABL'}});
+		}catch(error ){
+			await console.error('Failed to retrieve data : ', error);
+			}
     }
 
     /*
@@ -95,14 +97,16 @@ try {
     */
     async function addDSIT() {
        //ADD CODE HERE
-      console.log('Adding the new DSIT BLDG that will be across from Reitz union. Bye Bye CSE, Hub, and French Fries.');
-	  await Listing.create(
-	  {
-		  code:'DSIT',
-		  name:'Data Science and IT Building'
-	  }).catch((error) => {
-			console.error('Failed to create a new record : ', error);
-		});
+      await console.log('Adding the new DSIT BLDG that will be across from Reitz union. Bye Bye CSE, Hub, and French Fries.');
+	  try {
+		  await Listing.create(
+		  {
+			code:'DSIT',
+			name:'Data Science and IT Building'
+		  })
+	  }catch(error){
+		  await console.error('Failed to create a new record : ', error);
+	  }
 	}
     /*
       Phelps lab address is incorrect.
@@ -111,15 +115,17 @@ try {
     */
     async function updatePhelpsLab() {
        //ADD CODE HERE
-       console.log('UpdatingPhelpsLab.');
-	   await Listing.update({address:'1953 Museum Rd, Gainesville, FL 32603'},{where:{code:'PHL'}}).catch((error) => {
-			console.error('Failed to update a record : ', error);
-		});
+       await console.log('UpdatingPhelpsLab.');
+	   try {
+		   await Listing.update({address:'1953 Museum Rd, Gainesville, FL 32603'},{where:{code:'PHL'}})
+	   }catch(error){
+		   await console.error('Failed to update a record : ', error);
+		   }
     }
     
    console.log("Use these calls to test that your functions work. Use console.log statements in each so you can look at the terminal window to see what is executing. Also check the database.")
    //Calling all the functions to test them
-   async function runFunctionsSequemtially(){
+   async function runFunctionsSequentially(){
 		await retrieveAllListings(); 
 		await removeCable(); 
 		await addDSIT();
@@ -127,7 +133,7 @@ try {
 		await findLibraryWest();
 		await console.log('~FIN~');
    }
-    runFunctionsSequemtially().catch((err)=>{
+    runFunctionsSequentially().catch((err)=>{
 		console.error('Failed run functions ', error);
 	})   
   
