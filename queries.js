@@ -52,10 +52,10 @@ try {
     */
     async function retrieveAllListings() {
           //ADD CODE HERE{raw:true}
-         await console.log('Retrieving all listings');//{attributes:['code','name','latitude','longitude','address']}
+          console.log('Retrieving all listings');//{attributes:['code','name','latitude','longitude','address']}
 		 try{
 			 const result= await Listing.findAll();
-			 await console.log(JSON.stringify(result,null,5));
+			  console.log(JSON.stringify(result,null,5));
 		 }catch(error){console.error('Failed to retrieve data : ', error);}
 	};
     
@@ -65,12 +65,12 @@ try {
    */
     async function findLibraryWest() {
        //ADD CODE HERE
-      await console.log('Finding Library West');
+       console.log('Finding Library West');
 	  try{
 		  const result= await Listing.findOne({where:{name:'Library West'}});
-		  await console.log(JSON.stringify(result,null,5));
+		   console.log(JSON.stringify(result,null,5));
 	  }catch(error){
-		  await console.error('Failed to retrieve data : ', error);
+		   console.error('Failed to retrieve data : ', error);
 		  }
     }
 
@@ -83,11 +83,11 @@ try {
     */
      async function removeCable() {
          //ADD CODE HERE
-        await console.log('Removing Cable BLDG');
+         console.log('Removing Cable BLDG');
 		try{
-			const result=await Listing.destroy({where:{code:'CABL'}});
+			await Listing.destroy({where:{code:'CABL'}});
 		}catch(error ){
-			await console.error('Failed to retrieve data : ', error);
+			 console.error('Failed to retrieve data : ', error);
 			}
     }
 
@@ -97,7 +97,7 @@ try {
     */
     async function addDSIT() {
        //ADD CODE HERE
-      await console.log('Adding the new DSIT BLDG that will be across from Reitz union. Bye Bye CSE, Hub, and French Fries.');
+       console.log('Adding the new DSIT BLDG that will be across from Reitz union. Bye Bye CSE, Hub, and French Fries.');
 	  try {
 		  await Listing.create(
 		  {
@@ -105,7 +105,7 @@ try {
 			name:'Data Science and IT Building'
 		  })
 	  }catch(error){
-		  await console.error('Failed to create a new record : ', error);
+		   console.error('Failed to create a new record : ', error);
 	  }
 	}
     /*
@@ -115,11 +115,11 @@ try {
     */
     async function updatePhelpsLab() {
        //ADD CODE HERE
-       await console.log('UpdatingPhelpsLab.');
+        console.log('UpdatingPhelpsLab.');
 	   try {
 		   await Listing.update({address:'1953 Museum Rd, Gainesville, FL 32603'},{where:{code:'PHL'}})
 	   }catch(error){
-		   await console.error('Failed to update a record : ', error);
+		    console.error('Failed to update a record : ', error);
 		   }
     }
     
